@@ -17,4 +17,8 @@ module TechDebtCollector
     end
     return t
   end
+
+  def self.format_lines(lines)
+    lines.map { |l| l.strip }
+  end
 end

@@ -36,4 +36,26 @@ describe TechDebtCollector do
       expect(hashes.last[:lines]).to eq ["def bar\n", "  puts \"bar\"\n", "end\n"]
     end
   end
+
+  describe 'format_lines' do
+    it 'trims newlines from the given lines' do
+      expect(TechDebtCollector::format_lines(["a line\n", "another line\n"])).to eq(['a line', 'another line'])
+    end
+
+    it 'trims starting tabs from the given lines' do
+      expect(TechDebtCollector::format_lines(["\ta line", "another\t line", "\t\ta line with more than one tab"])).to eq(['a line', "another\t line", "a line with more than one tab"])
+    end
+
+    it 'trims trailing tabs from the given lines' do
+      expect(TechDebtCollector::format_lines(["a line\t", "another\t line", "a line with more than one tab\t"])).to eq(['a line', "another\t line", "a line with more than one tab"])
+    end
+
+    it 'trims starting spaces from the given lines' do
+      expect(TechDebtCollector::format_lines([" a line", "another line", "   a line with more than one space"])).to eq(['a line', "another line", "a line with more than one space"])
+    end
+
+    it 'trims trailing spaces from the given lines' do
+      expect(TechDebtCollector::format_lines(["a line ", "another line", "a line with more than one space    "])).to eq(['a line', "another line", "a line with more than one space"])
+    end
+  end
 end
