@@ -41,8 +41,9 @@ module TechDebtCollector
 
     def collect(options)
       paths = options[:paths] || ['./**/*']
+      formatter = options[:formatter].to_sym || :json
 
-      TechDebtCollector::get_files_hashes_for_paths(TechDebtCollector::collect_file_paths(paths))
+      debts = TechDebtCollector::get_files_hashes_for_paths(TechDebtCollector::collect_file_paths(paths))
       .map do |hash|
         {
           file: hash[:path],
@@ -52,6 +53,11 @@ module TechDebtCollector
         }
       end
       .reject { |debt| debt[:messages].empty? }
+
+      case formatter
+      when :json
+        return TechDebtCollector::JSONFormatter.format(debts)
+      end
     end
   end
 end
