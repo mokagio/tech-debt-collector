@@ -25,10 +25,11 @@ module TechDebtCollector
   def self.extract_tech_debt_messages(lines)
     debt = []
     lines.each do |line|
-      next unless line.start_with? '// tech-debt'
+      next unless line =~ /\A(\/\/|#) tech-debt/
 
-      if line.start_with? '// tech-debt:'
-        message = line.gsub('// tech-debt: ', '')
+      tech_debt_message_regex = /\A(\/\/|#) tech-debt: /
+      if line =~ tech_debt_message_regex
+        message = line.gsub(/\A(\/\/|#) tech-debt: /, '')
         debt.push({ message: message })
       end
     end
