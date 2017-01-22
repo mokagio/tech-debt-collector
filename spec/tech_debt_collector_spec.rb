@@ -58,4 +58,18 @@ describe TechDebtCollector do
       expect(TechDebtCollector::format_lines(["a line ", "another line", "a line with more than one space    "])).to eq(['a line', "another line", "a line with more than one space"])
     end
   end
+
+  describe 'extract_tech_debt_messages' do
+    it 'extracts messages from the given lines' do
+      lines = [
+        '// tech-debt: a message', 'def foo', 'puts "foo"', 'end',
+        '',
+        'def bar', 'puts "bar"', 'end',
+        '',
+        '// tech-debt: another message', 'def baz', 'true', 'end'
+      ]
+      expectation = [ { message: 'a message' }, { message: 'another message' } ]
+      expect(TechDebtCollector::extract_tech_debt_messages(lines)).to eq(expectation)
+    end
+  end
 end

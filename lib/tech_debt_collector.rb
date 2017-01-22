@@ -21,4 +21,17 @@ module TechDebtCollector
   def self.format_lines(lines)
     lines.map { |l| l.strip }
   end
+
+  def self.extract_tech_debt_messages(lines)
+    debt = []
+    lines.each do |line|
+      next unless line.start_with? '// tech-debt'
+
+      if line.start_with? '// tech-debt:'
+        message = line.gsub('// tech-debt: ', '')
+        debt.push({ message: message })
+      end
+    end
+    debt
+  end
 end
