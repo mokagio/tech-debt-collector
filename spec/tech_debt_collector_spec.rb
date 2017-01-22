@@ -32,8 +32,19 @@ describe TechDebtCollector do
       hashes = TechDebtCollector::get_files_hashes_for_paths(paths)
 
       expect(hashes.count).to eq 2
-      expect(hashes.first[:lines]).to eq ["def foo\n", "  puts \"foo\"\n", "end\n"]
-      expect(hashes.last[:lines]).to eq ["def bar\n", "  puts \"bar\"\n", "end\n"]
+      expect(hashes.first[:lines]).to eq [
+        "# tech-debt: foo tech debt message\n",
+        "def foo\n",
+        "  puts \"foo\"\n",
+        "end\n",
+        "\n",
+        "# tech-debt: another ruby debt message\n"
+      ]
+      expect(hashes.last[:lines]).to eq [
+        "def bar\n",
+        "  puts \"bar\"\n",
+        "end\n"
+      ]
     end
   end
 

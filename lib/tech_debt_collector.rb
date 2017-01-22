@@ -35,4 +35,22 @@ module TechDebtCollector
     end
     debt
   end
+
+  class Collector
+
+    def collect(options)
+      paths = options[:paths] || ['./**/*']
+
+      TechDebtCollector::get_files_hashes_for_paths(TechDebtCollector::collect_file_paths(paths))
+      .map do |hash|
+        {
+          file: hash[:path],
+          messages: TechDebtCollector::extract_tech_debt_messages(
+            TechDebtCollector::format_lines(hash[:lines])
+          )
+        }
+      end
+      .reject { |debt| debt[:messages].empty? }
+    end
+  end
 end
