@@ -1,4 +1,5 @@
 require "tech_debt_collector/version"
+require 'tech_debt_collector/formatters/json'
 
 module TechDebtCollector
   def self.collect_file_paths(patterns)
